@@ -1,0 +1,146 @@
+{
+    "0": {
+        "author": "Mischa_Schwartz",
+        "category": "Computer_science",
+        "due_in": -1,
+        "id": 0,
+        "isbn": 9781283329705,
+        "title": "Mobile_Wireless_Communications"
+    },
+    "1": {
+        "author": "Mischa_Schwartz",
+        "category": "Computer_science",
+        "due_in": -1,
+        "id": 1,
+        "isbn": 9781283329705,
+        "title": "Mobile_Wireless_Communications"
+    },
+    "10": {
+        "author": "David_Widder",
+        "category": "Math",
+        "due_in": -1,
+        "id": 10,
+        "isbn": 9780486661032,
+        "title": "Advanced_Calculus"
+    },
+    "11": {
+        "author": "Johann_Sebastian_Bach",
+        "category": "Music",
+        "due_in": -1,
+        "id": 11,
+        "isbn": 9781423421924,
+        "title": "First_Lessons_in_Bach"
+    },
+    "12": {
+        "author": "Johann_Sebastian_Bach",
+        "category": "Music",
+        "due_in": -1,
+        "id": 12,
+        "isbn": 9781423421924,
+        "title": "First_Lessons_in_Bach"
+    },
+    "13": {
+        "author": "JK_Rowling",
+        "category": "Fiction",
+        "due_in": -1,
+        "id": 13,
+        "isbn": 9780439708180,
+        "title": "Harry_Potter_and_the_Sorcerer's_Stone"
+    },
+    "14": {
+        "author": "JK_Rowling",
+        "category": "Fiction",
+        "due_in": -1,
+        "id": 14,
+        "isbn": 9780439708180,
+        "title": "Harry_Potter_and_the_Sorcerer's_Stone"
+    },
+    "15": {
+        "author": "JK_Rowling",
+        "category": "Fiction",
+        "due_in": -1,
+        "id": 15,
+        "isbn": 9780439708180,
+        "title": "Harry_Potter_and_the_Sorcerer's_Stone"
+    },
+    "16": {
+        "author": "JK_Rowling",
+        "category": "Fiction",
+        "due_in": -1,
+        "id": 16,
+        "isbn": 9780439708180,
+        "title": "Harry_Potter_and_the_Sorcerer's_Stone"
+    },
+    "17": {
+        "author": "JK_Rowling",
+        "category": "Fiction",
+        "due_in": -1,
+        "id": 17,
+        "isbn": 9780439708180,
+        "title": "Harry_Potter_and_the_Sorcerer's_Stone"
+    },
+    "2": {
+        "author": "Mischa_Schwartz",
+        "category": "Computer_science",
+        "due_in": -1,
+        "id": 2,
+        "isbn": 9781283329705,
+        "title": "Mobile_Wireless_Communications"
+    },
+    "3": {
+        "author": "Christopher_Bishop",
+        "category": "Computer_science",
+        "due_in": -1,
+        "id": 3,
+        "isbn": 9781493938438,
+        "title": "Pattern_Recognition_and_Machine_Learning"
+    },
+    "4": {
+        "author": "Delores_M_Etter",
+        "category": "Computer_science",
+        "due_in": -1,
+        "id": 4,
+        "isbn": 9780134444291,
+        "title": "Engineering_Problem_Solving_with_C++"
+    },
+    "5": {
+        "author": "Delores_M_Etter",
+        "category": "Computer_science",
+        "due_in": -1,
+        "id": 5,
+        "isbn": 9780134444291,
+        "title": "Engineering_Problem_Solving_with_C++"
+    },
+    "6": {
+        "author": "David_Widder",
+        "category": "Math",
+        "due_in": -1,
+        "id": 6,
+        "isbn": 9780486661032,
+        "title": "Advanced_Calculus"
+    },
+    "7": {
+        "author": "David_Widder",
+        "category": "Math",
+        "due_in": -1,
+        "id": 7,
+        "isbn": 9780486661032,
+        "title": "Advanced_Calculus"
+    },
+    "8": {
+        "author": "David_Widder",
+        "category": "Math",
+        "due_in": -1,
+        "id": 8,
+        "isbn": 9780486661032,
+        "title": "Advanced_Calculus"
+    },
+    "9": {
+        "author": "David_Widder",
+        "category": "Math",
+        "due_in": -1,
+        "id": 9,
+        "isbn": 9780486661032,
+        "title": "Advanced_Calculus"
+    }
+}

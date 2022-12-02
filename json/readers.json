@@ -1,0 +1,36 @@
+{
+    "Teacher1": {
+        "is_teacher": true,
+        "borrowed_books": {
+            "0": {
+                "isbn": 69420,
+                "title": "Sometitle",
+                "author": "Someauthor",
+                "category": "Somecategory",
+                "id": 0,
+                "due_in": -1
+            },
+            "1": {
+                "isbn": 7469,
+                "title": "Someothertitle",
+                "author": "Someotherauthor",
+                "category": "Someothercategory",
+                "id": 1,
+                "due_in": 4
+            }
+        }
+    },
+    "Student1": {
+        "is_teacher": false,
+        "borrowed_books": {
+            "2": {
+                "isbn": 1234321,
+                "title": "Studenttitle",
+                "author": "Studentauthor",
+                "category": "Studentcategory",
+                "id": 2,
+                "due_in": 7
+            }
+        }
+    }
+}
