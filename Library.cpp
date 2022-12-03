@@ -417,6 +417,4 @@ bool Library::check_auth(std::string id, std::string pw , int role ){
         }
     }
     return false;
-
 }
-
