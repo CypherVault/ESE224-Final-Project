@@ -108,9 +108,8 @@ break;
         end = std::chrono::steady_clock::now();
             days_passed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / (1000.0 * SECONDS_PER_DAY);
             lib.update_day(days_passed);
-             std::cin >> usr_entered;
-std::cout << "Enter the Username of the user to be deleted. Users with borrowed books cannot be deleted: ";
-
+std::cout << "Enter the Username of the user to be deleted: ";
+ std::cin >> usr_entered;
 m.delete_user(usr_entered, lib , T , S);
 
             end = std::chrono::steady_clock::now();

@@ -17,5 +17,5 @@ public:
 Librarian();
 int menu(Library &lib, Student &S, Teacher &T, Management &m);
 bool check_auth(std::string id, std::string pw, Library &lib, int role);
-void add_new_user(int role, std::string username, std::string password);
+
 };

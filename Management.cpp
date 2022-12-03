@@ -54,6 +54,7 @@ bool Management::delete_user(std::string username, Library lib, Teacher &t , Stu
 
                  lib.erase_name(username); // make this in Library
                 //need to remove reserver
+                std::cout << "Student has been deleted\n";
                 return true;
             }
             else {
@@ -67,6 +68,7 @@ bool Management::delete_user(std::string username, Library lib, Teacher &t , Stu
             if (t.has_borrowed_books(username)) {
                  lib.erase_name(username); // make this in Library
                 //need to remove reserver
+                std::cout << "Teacher has been deleted\n";
                 return true;
             }
             else {

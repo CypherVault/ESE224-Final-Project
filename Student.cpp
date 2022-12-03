@@ -361,17 +361,15 @@ bool Student::has_borrowed_books(std::string username)
     std::vector<StudentData> values;
     for (StudentData data : database)
     {
-        values.push_back(data);
+        if (data.username == username)
+            values.push_back(data);
     }
     int index = values.size();
     for (int i = 0; i < index; i++)
     {
-        if (values[i].username == username)
+        if (values[i].borrowed_books.size() == 0)
         {
-            if (values[i].borrowed_books.size() == 0)
-            {
-                return true;
-            }
+            return true;
         }
     }
 
