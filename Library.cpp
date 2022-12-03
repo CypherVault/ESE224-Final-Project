@@ -1,10 +1,12 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
+#include <chrono>
 #include <cctype>
 #include "Library.h"
 #include <cstring>
 #define debugout std::cerr
+
 
 Library::Library() {
     std::ifstream books, users;
@@ -33,14 +35,10 @@ Library::Library() {
 
     catalog.push_back({ -1, "", "", "", -1, -1 });  // Invalid book in catalog to return pointers as
 
-    while (!users.eof()) {
-        users >> role >> username >> password;
-        credentials[username] = {
-            {"role", role},
-            {"username", username},
-            {"password", password}
-        };
-    }
+
+    fill_creds();
+
+
     std::ofstream credsout("json/credentials.json");
     credsout << std::setw(4) << credentials << std::endl;
 
@@ -389,3 +387,36 @@ void Library::search_users(int role, std::string username, std::string password)
        std::cout << "User named " << username << " does exist!" << std::endl;
     }
 }
+
+ void Library::erase_name(std::string username){
+
+credentials.erase(credentials.find(username));
+
+ }
+
+
+void Library::fill_creds() {
+    std::ifstream users("student.txt");
+    std::string username, password;
+    int role;
+    while (!users.eof()) {
+        users >> role >> username >> password;
+        credentials[username] = {
+            {"role", role},
+            {"username", username},
+            {"password", password}
+        };
+    }
+}
+
+
+bool Library::check_auth(std::string id, std::string pw , int role ){
+ for (auto it = credentials.begin(); it != credentials.end(); ++it) {
+        if (it.value()["username"] == id && it.value()["password"] == pw && it.value()["role"] == role) {
+            return true;
+        }
+    }
+    return false;
+
+}
+

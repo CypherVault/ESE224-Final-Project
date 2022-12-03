@@ -2,47 +2,40 @@
 
 #include <iostream>
 
-class Reader {
+bool Librarian::check_auth(std::string id, std::string pw) {
+    for (auto it = credentials.begin(); it != credentials.end(); ++it) {
+        if (it.value()["username"] == id && it.value()["password"] == pw) {
+            return true;
+        }
+    }
+    return false;
+}
 
-    public:
-        virtual void printrole() {
-            ;
+void Managment::fill_creds_from_txt() {
+    std::ifstream users("student.txt");
+    std::string username, password;
+    int role;
+    while (!users.eof()) {
+        users >> role >> username >> password;
+        credentials[username] = {
+            {"role", role},
+            {"username", username},
+            {"password", password}
         };
-};
+    }
+}
 
-class Student : public Reader{
-    private:
 
-    public:
-        void printrole(){
-            std::cout << "Student.\n";
+void Library::fill_creds_from_txt() {
+    std::ifstream users("student.txt");
+    std::string username, password;
+    int role;
+    while (!users.eof()) {
+        users >> role >> username >> password;
+        credentials[username] = {
+            {"role", role},
+            {"username", username},
+            {"password", password}
         };
-};
-
-class Teacher : public Reader{
-    private:
-
-    public:
-        void printrole(){
-            std::cout << "Teacher.\n";
-        };
-};
-
-/*
-void print_Role(Reader* reader){
-    reader->printrole();
-};
- */
-
-int main(){
-    Reader *readerbase;
-    Student studentderived;
-    readerbase = &studentderived;
-
-    readerbase->printrole();
-
-    Teacher t;
-    readerbase = &t;
-    readerbase->printrole();
-};
-
+    }
+}

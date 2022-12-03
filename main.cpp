@@ -2,6 +2,9 @@
 #include "Teacher.h"
 #include "Student.h"
 #include "librarian.h"
+#include "Management.h"
+#include "user.h"
+#include "reader.h"
 #include <iostream>
 #include <ctime>
 #include <fstream>
@@ -17,6 +20,7 @@ int main() {
 	Teacher teacher = Teacher();
 	Library library = Library();
 	Librarian librarian = Librarian();
+	Management management = Management();
 	Reader *reader;
 
 	std::string usr;
@@ -30,9 +34,9 @@ int main() {
 		std::cin >> usr;
 		std::cin >> pas;
 
-		valid_student = student.check_auth(usr, pas);
-		valid_teacher = teacher.check_auth(usr, pas);
-		valid_librarian = librarian.check_auth(usr, pas);
+		valid_student = student.check_auth(usr, pas, library, 0);
+		valid_teacher = teacher.check_auth(usr, pas , library, 1);
+		valid_librarian = librarian.check_auth(usr, pas, library, 2);
 
 		if (!valid_teacher  && !valid_student && !valid_librarian) {
 			std::cout << "Invalid login! Please check your username and password" << std::endl;
@@ -78,7 +82,7 @@ int main() {
 		if (valid_librarian) {  // If it is valid librarian, then call menu from librarian
 			auto start = std::chrono::steady_clock::now();
 			do {
-				proceed = librarian.menu(library, student, teacher);
+				proceed = librarian.menu(library, student, teacher, management);
 			} while (proceed);
 			auto end = std::chrono::steady_clock::now();
 			double days_passed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / (1000.0 * SECONDS_PER_DAY);

@@ -430,23 +430,6 @@ void Teacher::fill_creds() {
     }
 }
 
-bool Teacher::check_auth(std::string id, std::string pw) {
-    for (int i = 0; i < usernames.size(); ++i) {
-        if (id == usernames[i]) {
-            if (pw == passwords[i]) {
-                session_username = usernames[i];
-                session_password = passwords[i];
-                index_in_database = i;
-                return true;
-            }
-            else {
-                break;
-            }
-        }
-    }
-    return false;
-}
-
 bool Teacher::session_has_overdue_books() {
     for (Book book : database[index_in_database].borrowed_books) {
         if (!book.due_in) {
@@ -460,4 +443,30 @@ bool Teacher::session_exceeded_books_limit() {
     return database[index_in_database].borrowed_books.size() < TEACHER_BORROW_LIMIT ? false : true;
 }
 
+bool Teacher::has_borrowed_books(std::string username)
+{
+    std::vector<TeacherData> values;
+    for (TeacherData data : database)
+    {
+        values.push_back(data);
+    }
+    int index = values.size();
+    for (int i = 0; i < index; i++)
+    {
+        if (values[i].username == username)
+        {
+            if (values[i].borrowed_books.size() == 0)
+            {
+                return true;
+            }
+        }
+    }
 
+    return false;
+} 
+
+
+
+bool Teacher::check_auth(std::string id, std::string pw, Library &lib, int role) {
+ return (lib.check_auth(id, pw, role));
+};

@@ -7,6 +7,7 @@
 #include <cmath>
 #include <chrono>
 
+
 Student::Student() {
     fill_creds();
     for (std::string username : usernames) {
@@ -331,22 +332,9 @@ void Student::fill_creds() {
     }
 }
 
-bool Student::check_auth(std::string id, std::string pw) {
-    for (int i = 0; i < usernames.size(); ++i) {
-        if (id == usernames[i]) {
-            if (pw == passwords[i]) {
-                session_username = usernames[i];
-                session_password = passwords[i];
-                index_in_database = i;
-                return true;
-            }
-            else {
-                break;
-            }
-        }
-    }
-    return false;
-}
+bool Student::check_auth(std::string id, std::string pw, Library &lib, int role) {
+ return (lib.check_auth(id, pw, role));
+};
 
 void Student::print_all_users_in_db() {
     for (StudentData data : database) {
@@ -366,4 +354,26 @@ bool Student::session_has_overdue_books() {
 
 bool Student::session_exceeded_books_limit() {
     return database[index_in_database].borrowed_books.size() < STUDENT_BORROW_LIMIT ? false : true;
+}
+
+bool Student::has_borrowed_books(std::string username)
+{
+    std::vector<StudentData> values;
+    for (StudentData data : database)
+    {
+        values.push_back(data);
+    }
+    int index = values.size();
+    for (int i = 0; i < index; i++)
+    {
+        if (values[i].username == username)
+        {
+            if (values[i].borrowed_books.size() == 0)
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
 }

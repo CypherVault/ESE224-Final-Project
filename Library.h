@@ -4,6 +4,8 @@
 #include <list>
 #include "third_party/json.hpp"
 
+
+
 using json = nlohmann::json;
 
 typedef struct LikesAndReservers {
@@ -62,6 +64,10 @@ class Library {
         void print_internal_rnl();
         void add_users(int role, std::string username, std::string password);
         void search_users(int role, std::string username, std::string password);
+        void erase_name(std::string username);      
+        void fill_creds();
+        bool check_auth(std::string id, std::string pw, int role);
+
 };
 
 template<typename T> auto stllist_iterator_of(T t);

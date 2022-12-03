@@ -2,11 +2,14 @@
 #include <string>
 #include <fstream>
 #include <vector>
-#include "inheritance.cpp"
 #include "Library.h"
+#include "user.h"
+#include "reader.h"
 #define STUDENT_BORROW_DURATION 30
 #define STUDENT_BORROW_LIMIT 5
 #define SECONDS_PER_DAY 5
+
+
 
 typedef struct StudentData  {
     std::string username;
@@ -37,8 +40,10 @@ class Student : public Reader{
         void update_day(double day);
         int menu(Library &lib);
         void fill_creds();
-        bool check_auth(std::string id, std::string pw);
+        bool check_auth(std::string id, std::string pw, Library &lib, int role);
         void print_all_users_in_db();
         bool session_has_overdue_books();
         bool session_exceeded_books_limit();
+        bool has_borrowed_books(std::string username);
+
 };

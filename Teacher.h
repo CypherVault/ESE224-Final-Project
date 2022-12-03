@@ -2,7 +2,8 @@
 #include <string>
 #include <fstream>
 #include <vector>
-#include "inheritance.cpp"
+#include "user.h"
+#include "reader.h"
 #include "Library.h"
 #define TEACHER_BORROW_DURATION 50
 #define TEACHER_BORROW_LIMIT 10
@@ -38,7 +39,8 @@ class Teacher : public Reader{
         void request_book(Library lib, long long int isbn, std::string title, std::string author, std::string category);
         int menu(Library &lib);
         void fill_creds();
-        bool check_auth(std::string id, std::string pw);
+        bool check_auth(std::string id, std::string pw, Library &lib, int role);
         bool session_has_overdue_books();
         bool session_exceeded_books_limit();
+        bool has_borrowed_books(std::string username);
 };

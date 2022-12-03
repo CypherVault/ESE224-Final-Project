@@ -1,12 +1,13 @@
 #include "librarian.h"
 
 
+
 Librarian::Librarian(){
     
 };
 
 
-int Librarian::menu(Library &lib, Student &S, Teacher &T){
+int Librarian::menu(Library &lib, Student &S, Teacher &T, Management &m){
 
     int success;
     int id_entered;
@@ -104,6 +105,18 @@ break;
             S.update_day(days_passed);
     break;
         case '5': 
+        end = std::chrono::steady_clock::now();
+            days_passed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / (1000.0 * SECONDS_PER_DAY);
+            lib.update_day(days_passed);
+             std::cin >> usr_entered;
+std::cout << "Enter the Username of the user to be deleted. Users with borrowed books cannot be deleted: ";
+
+m.delete_user(usr_entered, lib , T , S);
+
+            end = std::chrono::steady_clock::now();
+            days_passed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / (1000.0 * SECONDS_PER_DAY);
+            T.update_day(days_passed);
+            S.update_day(days_passed);
 
     break;
         case '0': 
@@ -126,7 +139,8 @@ return commandchosen;
 
 
 
-bool Librarian::check_auth(std::string id, std::string pw) {
-                return true;
+bool Librarian::check_auth(std::string id, std::string pw, Library &lib, int role) {
+          
+ return ( lib.check_auth(id, pw, role) );
 };
 
