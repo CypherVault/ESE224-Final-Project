@@ -30,7 +30,7 @@ int Librarian::menu(Library &lib, Student &S, Teacher &T, Management &m){
     std::cout << "+----------------------------+" << std::endl;
     std::cout << "\nYou are logged in as: " << " (Librarian)" << std::endl << std::endl;
     std::cout << "(1) - Add Books" << std::endl;
-    std::cout << "(2) - Be a Republican" << std::endl;
+    std::cout << "(2) - Delete Books" << std::endl;
     std::cout << "(3) - Search Users" << std::endl;
     std::cout << "(4) - Add Users" << std::endl;
     std::cout << "(5) - Delete Users" << std::endl; 
