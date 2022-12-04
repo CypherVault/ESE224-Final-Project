@@ -13,13 +13,14 @@ If you want to make your own set of logins, and books, the following need to be 
 
 
 A sample set of login info would look like:
-[0, 1, and 2 all indicate privledges to the system. 0 is a Student, 1 is a Teacher, 2 is a Librarian]
 ```
+[0, 1, and 2 all indicate privledges to the system. 0 is a Student, 1 is a Teacher, 2 is a Librarian]
 2	Westery	HereTree	
 0 Mike qwerty
 1 Alfonozo 6735109
 ```
 
+A sample set of book info would look like:
 ```
 [Information for books is stored in order as: ISBN TITLE AUTHOR GENRE NUMBEROFCOPIES]
 16278279832   How_to_tie_your_shoes Rigel_Oakfeild Tutorials  2
