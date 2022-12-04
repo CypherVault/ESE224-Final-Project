@@ -11,7 +11,7 @@ class Management {
       json creds;
    public:
       Management();
-      bool delete_user(std::string username, Library lib, Teacher &t , Student &s);
+      bool delete_user(std::string username, Library &lib, Teacher &t , Student &s);
 };
 
 /* use the below code in order to call the virtual fucntion to access the class type and all user pertinent information */

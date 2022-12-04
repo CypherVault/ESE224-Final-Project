@@ -75,7 +75,7 @@ class Library {
         void erase_name(std::string username);      
         void fill_creds();
         bool check_auth(std::string id, std::string pw, int role);
-
+        void remove_user_from_reservers_list(std::string username);
 };
 
 template<typename T> auto stllist_iterator_of(T t);

@@ -68,20 +68,7 @@ Library::Library() {
         }
     }
     number_of_books = catalog.size();
-    /*
-    for (auto it : catjson) {
-        std::cout << it << std::endl;
-    }
-     */
-    /*
-    std::ofstream catout("json/catout.json");
-    std::ofstream lnrout("json/resandlikes.json");
-    catout << std::setw(4) << catjson << std::endl;
-    lnrout << std::setw(4) << resandlikes << std::endl;
-     */
-    // update_catjson_with_catalog();
     update_catalog_with_catjson();
-    // update_resandlikes_with_internal_lnr();
     update_internal_lnr_with_resandlikes();
 }
 
@@ -285,23 +272,16 @@ void Library::add_book(long long int isbn, std::string title, std::string author
 }
 
 int Library::reserve_book(std::string username, std::string target_title) {
-    // debugout << "Enter reserve book func\n";
-    // debugout << "internal_lnr size: " << internal_lnr.size() << '\n';
     if (remaining_copies_of_title(target_title) != 0) {
         return -3;
     }
     for (int i = 0; i < internal_lnr.size(); ++i) {
-        // debugout << "iterator idx: " << i << '\n';
         auto current_iterating_book = internal_lnr[i];
         if (current_iterating_book.title == target_title) {
-            // debugout << "inside first if\n";
             if (stllist_contains(current_iterating_book.reservers, username)) {
-                // debugout << "inside second if\n";
                 return -2;
             }
-            // debugout << "Push back " << username << " to reservers\n";
             internal_lnr[i].reservers.push_back(username);
-            // debugout << "Done\n";
             return internal_lnr[i].reservers.size();
         }
     }
@@ -310,7 +290,6 @@ int Library::reserve_book(std::string username, std::string target_title) {
 }
 
 void Library::update_day(double days) {
-    // debugout << "Update catalog\n";
     for (int book_iter = 0; book_iter < catalog.size(); ++book_iter) {
         if (catalog[book_iter].due_in > 0) {
             catalog[book_iter].due_in -= days;
@@ -319,19 +298,12 @@ void Library::update_day(double days) {
             }
         }
     }
-    // Update reservers list
-    // debugout << "Enter internal_lnr iteration loop" << std::endl;
     for (int lnr_iter = 0; lnr_iter < internal_lnr.size(); ++lnr_iter) {
-        // debugout << "Set lnrptr of idx " << lnr_iter << std::endl;
         auto lnrptr = &internal_lnr[lnr_iter];
-        // debugout << lnrptr->reserver_days_passed << std::endl;
         if (!lnrptr->reservers.empty()) {
-            // debugout << "Reservers list is not empty:\nIncrementing days_passed" << std::endl;
             lnrptr->reserver_days_passed += days;
-            // debugout << "Enter days_passed decrement loop\n";
             while (lnrptr->reserver_days_passed > 5) {
                 lnrptr->reserver_days_passed -= 5;
-                // debugout << "After decrement: " << lnrptr->reserver_days_passed << std::endl;
                 lnrptr->reservers.pop_front();
                 if (lnrptr->reservers.empty()) {
                     lnrptr->reserver_days_passed = 0;
@@ -339,7 +311,6 @@ void Library::update_day(double days) {
                 }
             }
         } else {
-            // // debugout << "Reservers list is empty\n";
             lnrptr->reserver_days_passed = 0;
         }
     }
@@ -500,11 +471,9 @@ void Library::search_users(int role, std::string username, std::string password)
     }
 }
 
- void Library::erase_name(std::string username){
-
-credentials.erase(credentials.find(username));
-
- }
+void Library::erase_name(std::string username){
+    credentials.erase(credentials.find(username));
+}
 
 
 void Library::fill_creds() {
@@ -521,12 +490,20 @@ void Library::fill_creds() {
     }
 }
 
-
 bool Library::check_auth(std::string id, std::string pw , int role ){
- for (auto it = credentials.begin(); it != credentials.end(); ++it) {
+    for (auto it = credentials.begin(); it != credentials.end(); ++it) {
         if (it.value()["username"] == id && it.value()["password"] == pw && it.value()["role"] == role) {
             return true;
         }
     }
     return false;
+}
+
+void Library::remove_user_from_reservers_list(std::string username) {
+    for (int i = 0; i < internal_lnr.size(); ++i) {
+        auto t_reservers = internal_lnr[i].reservers;
+        if (std::find(t_reservers.begin(), t_reservers.end(), username) != t_reservers.end()) {
+            internal_lnr[i].reservers.remove(username);
+        }
+    }
 }

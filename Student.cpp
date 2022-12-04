@@ -49,28 +49,19 @@ void Student::print_userdata(StudentData data) {
     std::cout << std::endl;
 };
 
-///VIRTUAL////
+/* Overrides for Virtual Methods */
+void Student::get_period() {
+    std::cout << "\n Students can reserve for a maximum of:" << per << " days.\n";
+};
 
- void Student::get_period(){
+void Student::get_copies() {
+    std::cout << "\n Students can reserve a maximum of:" << lim << " books.\n";
+};
 
-std::cout << "\n Students can reserve for a maximum of:" << per << " days.\n";
-
- };
-
- void Student::get_copies(){
-
-std::cout << "\n Students can reserve a maximum of:" << lim << " books.\n";
-
- };
-
- void Student::printInfo(){
-
-std::cout << "\n This object is of class:" << object_class_type << "\n";
-
- };
-
-
-///////////////////////
+void Student::printInfo(){
+    std::cout << "\n This object is of class:" << object_class_type << "\n";
+};
+/* Overrides for Virtual Methods End */
 
 int Student::index_of_username(std::string username) {
     int not_found = -1, index = 0;
@@ -326,7 +317,6 @@ int Student::menu(Library &lib) {
             lib.update_internal_lnr_with_resandlikes();
             lib.sort_vector_lnr();
             lib.print_top_books();
-            // print_userdata(database[index_in_database]);
             commandchosen = 1;
             break;
         case 'b':
@@ -348,10 +338,7 @@ int Student::menu(Library &lib) {
                 std::cout << "You can only reserve books all of whose copies are on loan!" << std::endl;
             }
             std::cout << std::endl;
-            
-            // print_userdata(database[index_in_database]);
             commandchosen = 1;
-            // lib.print_internal_lnr();
             break;
         default:
             commandchosen = 1;

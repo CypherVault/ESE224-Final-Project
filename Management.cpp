@@ -30,16 +30,11 @@ Management::Management(){
     }
 };
 
-
-
-
-bool Management::delete_user(std::string username, Library lib, Teacher &t , Student &s){
+bool Management::delete_user(std::string username, Library &lib, Teacher &t , Student &s){
     for (auto it = creds.begin(); it != creds.end(); ++it)
     {
         if (it.value()["role"] == 2)
         {
-
-
             lib.erase_name(username); // make this in Library
             std::cout << "User deleted." << std::endl;
             return true;
@@ -48,9 +43,9 @@ bool Management::delete_user(std::string username, Library lib, Teacher &t , Stu
         {
             if (s.has_borrowed_books(username)) {
 
-                 lib.erase_name(username); // make this in Library
-                //need to remove reserver
-                std::cout << "Student has been deleted\n";
+                lib.erase_name(username); // make this in Library
+                lib.remove_user_from_reservers_list(username);
+                std::cout << "Student " << username << " has been deleted\n";
                 return true;
             }
             else {
@@ -61,9 +56,9 @@ bool Management::delete_user(std::string username, Library lib, Teacher &t , Stu
         else if (it.value()["role"] == 1)
         {
             if (t.has_borrowed_books(username)) {
-                 lib.erase_name(username); // make this in Library
-                //need to remove reserver
-                std::cout << "Teacher has been deleted\n";
+                lib.erase_name(username); // make this in Library
+                lib.remove_user_from_reservers_list(username);
+                std::cout << "Teacher " << username << " has been deleted\n";
                 return true;
             }
             else {
