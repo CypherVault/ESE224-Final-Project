@@ -44,6 +44,8 @@ finally,
 main.exe           # Windows (Command Prompt)
 ```
 
-credit for formatting of this readme is from the following repo: https://github.com/goonmandu/ant-maze
-Licensing for the nlohmann JSON header is found at: https://github.com/nlohmann/json/blob/develop/LICENSE.MIT
-C++ Json Parser Code From Niels Lohmann : Lohmann, N. (2022). JSON for Modern C++ (Version 3.11.2) [Computer software]. https://github.com/nlohmann
+ credit for formatting of this readme is from the following repo: https://github.com/goonmandu/ant-maze
+
+ Licensing for the nlohmann JSON header is found at: https://github.com/nlohmann/json/blob/develop/LICENSE.MIT
+
+ C++ Json Parser Code From Niels Lohmann : Lohmann, N. (2022). JSON for Modern C++ (Version 3.11.2) [Computer software]. https://github.com/nlohmann
