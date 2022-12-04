@@ -6,7 +6,7 @@ The system works off of textfiles for storage as well as json.
 
 If you want to make your own set of logins, and books, the following need to be done:  
 1. New User data needs to be formatted EXACTLY as the current "student.txt".
-2. "student.txt" holds all login information and is what the system uses to check auth. Later on in program it works off a json object. 
+2. "student.txt" holds all login information and is what the system uses to know what books are in system. Later on in program it works off a json object as well. 
 3. New book data needs to be formatted EXACTLY as the current "book.txt".
 4. "book.txt" holds all login information and is what the system uses to check auth. Later on in program it works off a json object. 
 5. At no point should a user of the program touch the .json files. These will be maanaged automatically so dont feel the need/desire to wok onto them!
