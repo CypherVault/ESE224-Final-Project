@@ -1,32 +1,38 @@
 {
     "9780134444291": {
         "likes": 0,
-        "reservers": null,
+        "reserver_days_passed": 0.0,
+        "reservers": [],
         "title": "Engineering_Problem_Solving_with_C++"
     },
     "9780439708180": {
         "likes": 0,
-        "reservers": null,
+        "reserver_days_passed": 0.0,
+        "reservers": [],
         "title": "Harry_Potter_and_the_Sorcerer's_Stone"
     },
     "9780486661032": {
         "likes": 0,
-        "reservers": null,
+        "reserver_days_passed": 0.0,
+        "reservers": [],
         "title": "Advanced_Calculus"
     },
     "9781283329705": {
         "likes": 0,
-        "reservers": null,
+        "reserver_days_passed": 0.0,
+        "reservers": [],
         "title": "Mobile_Wireless_Communications"
     },
     "9781423421924": {
         "likes": 0,
-        "reservers": null,
+        "reserver_days_passed": 0.0,
+        "reservers": [],
         "title": "First_Lessons_in_Bach"
     },
     "9781493938438": {
         "likes": 0,
-        "reservers": null,
+        "reserver_days_passed": 0.0,
+        "reservers": [],
         "title": "Pattern_Recognition_and_Machine_Learning"
     }
 }

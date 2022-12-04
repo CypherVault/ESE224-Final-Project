@@ -3,26 +3,24 @@
 #include <fstream>
 #include <vector>
 #include "Library.h"
-#include "user.h"
-#include "reader.h"
+#include "User.h"
+#include "Reader.h"
 #define STUDENT_BORROW_DURATION 30
 #define STUDENT_BORROW_LIMIT 5
 #define SECONDS_PER_DAY 5
 
-
-
-typedef struct StudentData  {
+typedef struct StudentData {
     std::string username;
     std::vector<Book> borrowed_books;
 } StudentData;
 
-class Student : public Reader{
+class Student : public Reader {
     private:
         std::string session_username, session_password;
         std::vector<std::string> usernames;
         std::vector<std::string> passwords;
         std::vector<StudentData> database;
-        std::string object_class_type = "Student" ;
+        std::string object_class_type = "Student";
         int per = 30;
         int lim = 5;
         int index_in_database;
@@ -45,5 +43,4 @@ class Student : public Reader{
         bool session_has_overdue_books();
         bool session_exceeded_books_limit();
         bool has_borrowed_books(std::string username);
-
 };

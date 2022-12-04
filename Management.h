@@ -6,26 +6,13 @@
 #include "Library.h"
 #include "third_party/json.hpp"
 
-
-
-class Management{
-protected:
-   json creds;
-
-
-public:
- 
-Management();
-
-bool delete_user(std::string username, Library lib, Teacher &t , Student &s);
-
-    
-
-
+class Management {
+   protected:
+      json creds;
+   public:
+      Management();
+      bool delete_user(std::string username, Library lib, Teacher &t , Student &s);
 };
-
-
-
 
 /* use the below code in order to call the virtual fucntion to access the class type and all user pertinent information */
 

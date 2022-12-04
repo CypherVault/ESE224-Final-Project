@@ -118,6 +118,10 @@ bool Student::borrow_book_student(Library lib, int id) {
         std::cout << "The book was not found!" << std::endl;
         return false;
     }
+    if (!lib.borrower_is_first_in_line(book.isbn, session_username)) {
+        std::cout << "This book has been reserved by another user!" << std::endl;
+        return false;
+    }
     if (book.due_in >= 0) {
         std::cout << "That copy is on loan. Please try another ID." << std::endl;
         return false;
@@ -142,7 +146,7 @@ void Student::update_day(double day) {
 }
 
 int Student::menu(Library &lib) {
-    bool success;
+    int success;
     char expression = 'a';
     int commandchosen;
     int query_id;
@@ -165,13 +169,14 @@ int Student::menu(Library &lib) {
     std::cout << "(4) - Renew Book" << std::endl;
     std::cout << "(7) - View Borrowed Books" << std::endl;
     std::cout << "(8) - Search Book by Keyword" << std::endl;
+    std::cout << "(a) - View Top 10 Liked Books" << std::endl;
+    std::cout << "(b) - Reserve Book" << std::endl;
     std::cout << "(0) - Log Out " << std::endl;
     std::cout << "\nPlease select an option. ";
     std::cout << std::endl << "Enter a command: ";
     std::cin >> expression;
     switch (expression) {
         case '1': {
-
             end = std::chrono::steady_clock::now();
             days_passed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / (1000.0 * SECONDS_PER_DAY);
             lib.update_day(days_passed);
@@ -209,6 +214,7 @@ int Student::menu(Library &lib) {
             success = borrow_book_student(lib, query_id);
             if (success) {
                 lib.set_loan_duration(query_id, STUDENT_BORROW_DURATION);  // ??
+                lib.increment_likes(query_id);
             }
             std::cout << std::endl;
             print_userdata(database[index_in_database]);
@@ -312,9 +318,48 @@ int Student::menu(Library &lib) {
             update_day(days_passed);
             commandchosen = 0;
             break;
+        case 'a':
+            end = std::chrono::steady_clock::now();
+            days_passed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / (1000.0 * SECONDS_PER_DAY);
+            lib.update_day(days_passed);
+            update_day(days_passed);
+            lib.update_internal_lnr_with_resandlikes();
+            lib.sort_vector_lnr();
+            lib.print_top_books();
+            // print_userdata(database[index_in_database]);
+            commandchosen = 1;
+            break;
+        case 'b':
+            std::cout << "Enter the title of the book you would like to reserve: ";
+            std::cin >> query_title;
+            end = std::chrono::steady_clock::now();
+            days_passed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / (1000.0 * SECONDS_PER_DAY);
+            success = lib.reserve_book(session_username, query_title);
+            // std::cerr << success << '\n';
+            lib.update_day(days_passed);
+            update_day(days_passed);
+            if (success > -1) {
+                std::cout << "You have successfully reserved " << query_title << " at position " << success << "." << std::endl;
+            } else if (success == -1) {
+                std::cout << "The book \"" << query_title << "\" could not be found." << std::endl;
+            } else if (success == -2) {
+                std::cout << "You have already reserved " << query_title << "!" << std::endl;
+            } else if (success == -3) {
+                std::cout << "You can only reserve books all of whose copies are on loan!" << std::endl;
+            }
+            std::cout << std::endl;
+            
+            // print_userdata(database[index_in_database]);
+            commandchosen = 1;
+            // lib.print_internal_lnr();
+            break;
         default:
+            commandchosen = 1;
             std::cout << "Invalid command! Try again." << std::endl << std::endl;
     }
+    lib.update_resandlikes_with_internal_lnr();
+    lib.update_catjson_with_catalog();
+    lib.save_all_jsons_to_file();
     return commandchosen;
 }
 
@@ -333,7 +378,7 @@ void Student::fill_creds() {
 }
 
 bool Student::check_auth(std::string id, std::string pw, Library &lib, int role) {
- return (lib.check_auth(id, pw, role));
+    return (lib.check_auth(id, pw, role));
 };
 
 void Student::print_all_users_in_db() {

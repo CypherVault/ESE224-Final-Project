@@ -1,11 +1,8 @@
-#include "librarian.h"
-
-
+#include "Librarian.h"
 
 Librarian::Librarian(){
     
 };
-
 
 int Librarian::menu(Library &lib, Student &S, Teacher &T, Management &m){
 

@@ -1,10 +1,10 @@
 #include "Library.h"
 #include "Teacher.h"
 #include "Student.h"
-#include "librarian.h"
+#include "Librarian.h"
 #include "Management.h"
-#include "user.h"
-#include "reader.h"
+#include "User.h"
+#include "Reader.h"
 #include <iostream>
 #include <ctime>
 #include <fstream>
@@ -53,9 +53,11 @@ int main() {
 			do {
 				proceed = teacher.menu(library);
 				reader = &teacher;
+				/*
 	  		    reader->printInfo();
 				reader->get_copies();
 				reader->get_period();
+				 */
 
 			} while (proceed);
 			auto end = std::chrono::steady_clock::now();
@@ -69,9 +71,11 @@ int main() {
 				proceed = student.menu(library);
 				//student print 
 			reader = &student;
+			/*
 	  		reader->printInfo();
 			reader->get_copies();
-				reader->get_period();
+			reader->get_period();
+			 */
 //          ^^^ make a pointer to the student object EQUAL to the base class pointer. Then use that to call the base function.
 			} while (proceed);
 			auto end = std::chrono::steady_clock::now();

@@ -5,6 +5,8 @@
 #include <cctype>
 #include "Library.h"
 #include <cstring>
+#include <fstream>
+#include <list>
 #define debugout std::cerr
 
 
@@ -47,7 +49,8 @@ Library::Library() {
         resandlikes[std::to_string(isbn)] = {
             {"reservers", {}},
             {"likes", 0},
-            {"title", title}
+            {"title", title},
+            {"reserver_days_passed", 0}
         };
         for (int i = 0; i < copies; ++i) {
             book = { isbn, title, author, category, consec_id, -1 };
@@ -70,15 +73,87 @@ Library::Library() {
         std::cout << it << std::endl;
     }
      */
+    /*
     std::ofstream catout("json/catout.json");
-    std::ofstream rnlout("json/resandlikes.json");
+    std::ofstream lnrout("json/resandlikes.json");
     catout << std::setw(4) << catjson << std::endl;
-    rnlout << std::setw(4) << resandlikes << std::endl;
-
-    rnljson_to_vector();
+    lnrout << std::setw(4) << resandlikes << std::endl;
+     */
+    // update_catjson_with_catalog();
+    update_catalog_with_catjson();
+    // update_resandlikes_with_internal_lnr();
+    update_internal_lnr_with_resandlikes();
 }
 
+bool Library::borrower_is_first_in_line(long long int isbn, std::string username) {
+    for (LikesAndReservers lnr : internal_lnr) {
+        if (lnr.isbn == isbn && \
+            (lnr.reservers.empty() || lnr.reservers.front() == username)) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
+int Library::remaining_copies_of_title(std::string title) {
+    int rem_copies = 0;
+    for (Book book : catalog) {
+        if (book.title == title && book.due_in == -1) {
+            rem_copies++;
+        }
+    }
+    return rem_copies;
+}
+
+void Library::save_all_jsons_to_file() {
+    std::ofstream catout("json/catout.json");
+    std::ofstream resandlikes_json("json/resandlikes.json");
+    catout << std::setw(4) << catjson << std::endl;
+    resandlikes_json << std::setw(4) << resandlikes << std::endl;
+}
+
+void Library::update_catalog_with_catjson() {
+    catalog.clear();
+    for (auto it = catjson.begin(); it != catjson.end(); ++it) {
+        Book to_add = {
+            it.value()["isbn"],
+            it.value()["title"],
+            it.value()["author"],
+            it.value()["category"],
+            it.value()["id"],
+            it.value()["due_in"]
+        };
+        catalog.push_back(to_add);
+    }
+    std::sort(catalog.begin(), catalog.end(),
+              [](Book a, Book b) {
+                  return a.id < b.id;
+              });
+}
+
+void Library::update_catjson_with_catalog() {
+    for (Book book : catalog) {
+        catjson[std::to_string(book.id)] = {
+            {"author", book.author},
+            {"category", book.category},
+            {"due_in", book.due_in},
+            {"id", book.id},
+            {"isbn", book.isbn},
+            {"title", book.title}
+        };
+    }
+}
+
+void Library::update_resandlikes_with_internal_lnr() {
+    for (LikesAndReservers lnr : internal_lnr) {
+        resandlikes[std::to_string(lnr.isbn)] = {
+            {"likes", lnr.likes},
+            {"reservers", lnr.reservers},
+            {"title", lnr.title},
+            {"reserver_days_passed", lnr.reserver_days_passed}
+        };
+    }
+}
 void Library::JsonParser(){
 
  for (Book book : catalog) {
@@ -89,26 +164,27 @@ void Library::JsonParser(){
 
 
 
-void Library::rnljson_to_vector() {
-    internal_rnl.clear();
+void Library::update_internal_lnr_with_resandlikes() {
+    internal_lnr.clear();
     char *end;
     for (auto it = resandlikes.begin(); it != resandlikes.end(); ++it) {
         std::list<std::string> reservers_vector;
         for (auto resit = (*it)["reservers"].begin(); resit != (*it)["reservers"].end(); ++resit) {
             reservers_vector.push_back(*resit);
         }
-        internal_rnl.push_back({
+        internal_lnr.push_back({
             std::strtoll(it.key().c_str(), &end, 10),
             it.value()["title"],
             reservers_vector,
-            it.value()["likes"]
+            it.value()["likes"],
+            it.value()["reserver_days_passed"]
         });
     }
 }
 
 void Library::print_top_books() {
     int rank = 1;
-    for (LikesAndReservers data : internal_rnl) {
+    for (LikesAndReservers data : internal_lnr) {
         if (data.likes) {
             std::cout << "#" << rank++ << ": " << data.title << " (" << data.likes << ")" << std::endl;
         }
@@ -116,7 +192,7 @@ void Library::print_top_books() {
 }
 
 void Library::sort_vector_lnr() {
-    std::sort(internal_rnl.begin(), internal_rnl.end(),
+    std::sort(internal_lnr.begin(), internal_lnr.end(),
               [](LikesAndReservers a, LikesAndReservers b) {
                   return a.likes > b.likes;
               });
@@ -165,12 +241,12 @@ void Library::print_all_books() {
     }
 };
 
-void Library::print_internal_rnl() {
-    for (LikesAndReservers rnl_it : internal_rnl) {
-        std::cout << "ISBN:      " << rnl_it.isbn << std::endl;
-        std::cout << "Title:     " << rnl_it.title << std::endl;
-        std::cout << "Likes:     " << rnl_it.likes << std::endl;
-        std::cout << "Reservers: "; print_list(rnl_it.reservers);
+void Library::print_internal_lnr() {
+    for (LikesAndReservers lnr_it : internal_lnr) {
+        std::cout << "ISBN:      " << lnr_it.isbn << std::endl;
+        std::cout << "Title:     " << lnr_it.title << std::endl;
+        std::cout << "Likes:     " << lnr_it.likes << std::endl;
+        std::cout << "Reservers: "; print_list(lnr_it.reservers);
         std::cout << std::endl << std::endl;
     }
 }
@@ -209,26 +285,62 @@ void Library::add_book(long long int isbn, std::string title, std::string author
 }
 
 int Library::reserve_book(std::string username, std::string target_title) {
-    for (int i = 0; i < internal_rnl.size(); ++i) {
-        auto current_iterating_book = internal_rnl[i];
+    // debugout << "Enter reserve book func\n";
+    // debugout << "internal_lnr size: " << internal_lnr.size() << '\n';
+    if (remaining_copies_of_title(target_title) != 0) {
+        return -3;
+    }
+    for (int i = 0; i < internal_lnr.size(); ++i) {
+        // debugout << "iterator idx: " << i << '\n';
+        auto current_iterating_book = internal_lnr[i];
         if (current_iterating_book.title == target_title) {
+            // debugout << "inside first if\n";
             if (stllist_contains(current_iterating_book.reservers, username)) {
+                // debugout << "inside second if\n";
                 return -2;
             }
-            internal_rnl[i].reservers.push_back(username);
-            return internal_rnl[i].reservers.size();
+            // debugout << "Push back " << username << " to reservers\n";
+            internal_lnr[i].reservers.push_back(username);
+            // debugout << "Done\n";
+            return internal_lnr[i].reservers.size();
         }
     }
+    std::cerr << "Book not found\n";
     return -1;
 }
 
 void Library::update_day(double days) {
+    // debugout << "Update catalog\n";
     for (int book_iter = 0; book_iter < catalog.size(); ++book_iter) {
         if (catalog[book_iter].due_in > 0) {
             catalog[book_iter].due_in -= days;
             if (catalog[book_iter].due_in < 0) {
                 catalog[book_iter].due_in = 0;
             }
+        }
+    }
+    // Update reservers list
+    // debugout << "Enter internal_lnr iteration loop" << std::endl;
+    for (int lnr_iter = 0; lnr_iter < internal_lnr.size(); ++lnr_iter) {
+        // debugout << "Set lnrptr of idx " << lnr_iter << std::endl;
+        auto lnrptr = &internal_lnr[lnr_iter];
+        // debugout << lnrptr->reserver_days_passed << std::endl;
+        if (!lnrptr->reservers.empty()) {
+            // debugout << "Reservers list is not empty:\nIncrementing days_passed" << std::endl;
+            lnrptr->reserver_days_passed += days;
+            // debugout << "Enter days_passed decrement loop\n";
+            while (lnrptr->reserver_days_passed > 5) {
+                lnrptr->reserver_days_passed -= 5;
+                // debugout << "After decrement: " << lnrptr->reserver_days_passed << std::endl;
+                lnrptr->reservers.pop_front();
+                if (lnrptr->reservers.empty()) {
+                    lnrptr->reserver_days_passed = 0;
+                    break;
+                }
+            }
+        } else {
+            // // debugout << "Reservers list is empty\n";
+            lnrptr->reserver_days_passed = 0;
         }
     }
 }
@@ -359,7 +471,7 @@ template<typename T> void print_list(std::list<T> tlist) {
 template<typename T> bool stllist_contains(std::list<T> tlist, T t) {
     auto it = tlist.begin();
     while (it != tlist.end()) {
-        if (*it == t) {
+        if (*it++ == t) {
             return 1;
         }
     }

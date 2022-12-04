@@ -1,9 +1,7 @@
 #include "Management.h"
 
 Management::Management(){
-
-
-  std::ifstream users2;
+    std::ifstream users2;
     std::ifstream books, users;
     long long int isbn;
     std::string title;
@@ -16,6 +14,7 @@ Management::Management(){
     Book book;
 
     users2.open("student.txt");
+
     if (users2.fail()) {
         std::cerr << "Could not open credentials file for management!";
         exit(1);
@@ -29,8 +28,6 @@ Management::Management(){
             {"password", password}
         };
     }
-   
-
 };
 
 
@@ -49,7 +46,6 @@ bool Management::delete_user(std::string username, Library lib, Teacher &t , Stu
         }
         else if (it.value()["role"] == 0)
         {
-            
             if (s.has_borrowed_books(username)) {
 
                  lib.erase_name(username); // make this in Library
@@ -64,7 +60,6 @@ bool Management::delete_user(std::string username, Library lib, Teacher &t , Stu
         }
         else if (it.value()["role"] == 1)
         {
-            
             if (t.has_borrowed_books(username)) {
                  lib.erase_name(username); // make this in Library
                 //need to remove reserver
@@ -76,7 +71,12 @@ bool Management::delete_user(std::string username, Library lib, Teacher &t , Stu
                 return false;
             }
         }
+        else
+        {
+            return false;
+        }
     }
+    return false;
 }
 
 

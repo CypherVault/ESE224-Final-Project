@@ -1,26 +1,17 @@
 #pragma once
 #include <iostream>
 #include <string.h>
-#include "user.h"
+#include "User.h"
 
 
 class Reader : public User{
-protected:
-std::string username;
-std::string password;
-std::string object_class_type = "";
-int per;
-int lim;
-public:
-
-
-virtual void get_copies(){
-    ;
-}
-
-virtual void get_period(){
-    ;
-}
-
+    protected:
+        std::string username;
+        std::string password;
+        std::string object_class_type = "";
+        int per;
+        int lim;
+    public:
+        virtual void get_copies() {}  
+        virtual void get_period() {}
 };
-

@@ -117,6 +117,10 @@ bool Teacher::borrow_book_teacher(Library lib, int id) {
         std::cout << "The book was not found!" << std::endl;
         return false;
     }
+    if (!lib.borrower_is_first_in_line(book.isbn, session_username)) {
+        std::cout << "This book has been reserved by another user!" << std::endl;
+        return false;
+    }
     if (book.due_in >= 0) {
         std::cout << "That copy is on loan. Please try another ID." << std::endl;
         return false;
@@ -153,8 +157,8 @@ int Teacher::menu(Library &lib) {
     std::vector<Book> search_result;
     std::chrono::steady_clock::time_point end;
     Book renewed, returned, deleted;
-    std::ifstream rnl("json/resandlikes.json");
-    json resandlikes = json::parse(rnl);
+    std::ifstream lnr("json/resandlikes.json");
+    json resandlikes = json::parse(lnr);
 
     auto start = std::chrono::steady_clock::now();
     std::cout << "\n+----------------------------+" << std::endl;
@@ -362,53 +366,51 @@ int Teacher::menu(Library &lib) {
             days_passed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / (1000.0 * SECONDS_PER_DAY);
             lib.update_day(days_passed);
             update_day(days_passed);
-            lib.rnljson_to_vector();
+            lib.update_internal_lnr_with_resandlikes();
             lib.sort_vector_lnr();
             lib.print_top_books();
             // print_userdata(database[index_in_database]);
             commandchosen = 1;
             break;
         case 'b':
-            end = std::chrono::steady_clock::now();
-            days_passed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / (1000.0 * SECONDS_PER_DAY);
-            lib.update_day(days_passed);
-            if (session_has_overdue_books()) {
-                std::cout << "You must return overdue books first!" << std::endl;
-                break;
-            }
-            if (session_exceeded_books_limit()) {
-                std::cout << "You are at your borrow limit! Return some books first." << std::endl;
-                break;
-            }
             std::cout << "Enter the title of the book you would like to reserve: ";
             std::cin >> query_title;
             end = std::chrono::steady_clock::now();
             days_passed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / (1000.0 * SECONDS_PER_DAY);
-            update_day(days_passed);
             success = lib.reserve_book(session_username, query_title);
+            // std::cerr << success << '\n';
+            lib.update_day(days_passed);
+            update_day(days_passed);
             if (success > -1) {
                 std::cout << "You have successfully reserved " << query_title << " at position " << success << "." << std::endl;
             } else if (success == -1) {
                 std::cout << "The book \"" << query_title << "\" could not be found." << std::endl;
             } else if (success == -2) {
                 std::cout << "You have already reserved " << query_title << "!" << std::endl;
+            } else if (success == -3) {
+                std::cout << "You can only reserve books all of whose copies are on loan!" << std::endl;
             }
             std::cout << std::endl;
             
             // print_userdata(database[index_in_database]);
             commandchosen = 1;
-            lib.print_internal_rnl();
+            // lib.print_internal_lnr();
             break;
-            case 'P':
-
-            lib.JsonParser();
-
+        case 'c':
+            end = std::chrono::steady_clock::now();
+            days_passed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / (1000.0 * SECONDS_PER_DAY);
+            lib.update_day(days_passed);
+            update_day(days_passed);
+            lib.update_catalog_with_catjson();
+            commandchosen = 1;
             break;
         default:
+            commandchosen = 1;
             std::cout << "Invalid command! Try again." << std::endl << std::endl;
     }
-    std::ofstream rnlout("json/resandlikes.json");
-    rnlout << std::setw(4) << resandlikes << std::endl;
+    lib.update_resandlikes_with_internal_lnr();
+    lib.update_catjson_with_catalog();
+    lib.save_all_jsons_to_file();
     return commandchosen;
 }
 

@@ -2,8 +2,8 @@
 #include <string>
 #include <fstream>
 #include <vector>
-#include "user.h"
-#include "reader.h"
+#include "User.h"
+#include "Reader.h"
 #include "Library.h"
 #define TEACHER_BORROW_DURATION 50
 #define TEACHER_BORROW_LIMIT 10
@@ -14,7 +14,7 @@ typedef struct TeacherData {
     std::vector<Book> borrowed_books;
 } TeacherData;
 
-class Teacher : public Reader{
+class Teacher : public Reader {
     private:
         std::string session_username, session_password;
         std::vector<std::string> usernames;
